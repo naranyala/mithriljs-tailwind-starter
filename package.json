@@ -15,9 +15,12 @@
   "dependencies": {
     "@preact/signals": "^2.0.1",
     "@tailwindcss/vite": "^4.0.13",
+    "@xstate/store": "^3.4.0",
     "clsx": "^2.1.1",
     "mithril": "^2.2.14",
     "mitt": "^3.0.1",
+    "motion": "^12.5.0",
+    "rxjs": "^7.8.2",
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.0.13"
   }
