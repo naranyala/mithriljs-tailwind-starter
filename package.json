@@ -9,19 +9,21 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "typescript": "~5.7.2",
-    "vite": "^6.2.0"
+    "@types/mithril": "^2.2.8",
+    "typescript": "~6.0.3",
+    "vite": "^8.0.14"
   },
   "dependencies": {
-    "@preact/signals": "^2.0.1",
-    "@tailwindcss/vite": "^4.0.13",
-    "@xstate/store": "^3.4.0",
+    "@preact/signals": "^2.9.1",
+    "@tailwindcss/vite": "^4.3.0",
+    "@xstate/store": "^4.1.0",
     "clsx": "^2.1.1",
-    "mithril": "^2.2.14",
+    "mithril": "^2.3.8",
     "mitt": "^3.0.1",
-    "motion": "^12.5.0",
+    "motion": "^12.40.0",
     "rxjs": "^7.8.2",
-    "tailwind-merge": "^3.0.2",
-    "tailwindcss": "^4.0.13"
+    "tailwind-merge": "^3.6.0",
+    "tailwindcss": "^4.3.0",
+    "vite-plugin-singlefile": "^2.3.3"
   }
 }

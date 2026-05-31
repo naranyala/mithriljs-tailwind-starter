@@ -3,9 +3,7 @@ import Layout from "@/layouts/default";
 import Counter from "@/lib/Counter";
 
 export default {
-	view: () => (
-		<Layout>
-			<Counter />
-		</Layout>
-	),
+	view: () => m(Layout, null, [
+		m(Counter),
+	]),
 };
