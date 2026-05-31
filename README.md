@@ -1,11 +1,10 @@
-# Mithril JSX Tailwind Starter
+# Mithril Tailwind Starter
 
-A modern, high-performance frontend starter template using [Mithril.js](https://github.com/mithril/mithril) with JSX support, [Tailwind CSS v4](https://tailwindcss.com/), and [Vite](https://vitejs.dev/). This template is designed for developers who want a lightweight, extremely fast, and type-safe foundation for their web applications.
+A modern, high-performance frontend starter template using [Mithril.js](https://github.com/mithril/mithril), [Tailwind CSS v4](https://tailwindcss.com/), and [Vite](https://vitejs.dev/). This template is designed for developers who want a lightweight, extremely fast, and type-safe foundation for their web applications.
 
 ## ✨ Features
 
 - 🚀 **Blazing Fast**: Powered by Vite and Mithril.js for minimal overhead and instant HMR.
-- ⚛️ **JSX Support**: Enjoy the familiarity of JSX with Mithril's efficient rendering.
 - 🎨 **Tailwind CSS v4**: Pre-configured with the latest Tailwind CSS integration via `@tailwindcss/vite`.
 - 🛡️ **TypeScript Ready**: Full type safety out of the box.
 - 📦 **Single File Build**: Option to bundle everything into a single HTML file using [vite-plugin-singlefile](https://github.com/richardtallent/vite-plugin-singlefile).
@@ -14,7 +13,7 @@ A modern, high-performance frontend starter template using [Mithril.js](https://
 ## 🛠️ Tech Stack
 
 ### Core Dependencies
-- [Mithril.js](https://github.com/mithril/mithril) - A lightweight, fast, and friendly m.js framework.
+- [Mithril.js](https://github.com/mithriljs/mithril.js) - A lightweight, fast, and friendly m.js framework.
 - [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework.
 - [Vite](https://vitejs.dev/) - Next generation frontend tooling.
 - [@preact/signals](https://github.com/preactjs/signals) - Fine-grained reactivity for state management.

@@ -3,29 +3,39 @@ import m, { Vnode } from "mithril";
 import Layout from "./layouts/default";
 
 // Error Boundary Component
-const ErrorBoundary: any = {
-	state: {
-		error: null as Error | null,
-		originalView: null as any,
-	},
+interface ErrorBoundaryState extends m.Component<{}, any> {
+	error: Error | null;
+	originalView: any;
+}
+
+const ErrorBoundary: ErrorBoundaryState = {
+	error: null,
+	originalView: null,
 
 	oninit(vnode: Vnode) {
-		this.state.error = null;
-		this.state.originalView = vnode.children;
+		this.error = null;
+		this.originalView = vnode.children;
+	},
+
+	onbeforeupdate(vnode: Vnode) {
+		if (vnode.children !== this.originalView) {
+			this.error = null;
+			this.originalView = vnode.children;
+		}
 	},
 
 	view(vnode: Vnode) {
-		if (this.state.error) {
+		if (this.error) {
 			return m(Layout, null, [
 				m("div", { class: "min-h-screen p-8 bg-red-50" }, [
 					m("div", { class: "max-w-3xl mx-auto" }, [
 						m("h1", { class: "text-2xl font-bold text-red-700 mb-4" }, "Something went wrong"),
 						m("div", { class: "bg-white rounded-lg shadow-lg p-6" }, [
-							m("div", { class: "text-red-600 font-mono mb-4" }, this.state.error.message),
-							m("pre", { class: "bg-gray-100 p-4 rounded overflow-auto text-sm" }, this.state.error.stack),
+							m("div", { class: "text-red-600 font-mono mb-4" }, this.error.message),
+							m("pre", { class: "bg-gray-100 p-4 rounded overflow-auto text-sm" }, this.error.stack),
 							m("button", {
 								onclick: () => {
-									this.state.error = null;
+									this.error = null;
 									m.redraw();
 								},
 								class: "mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700",
@@ -37,21 +47,12 @@ const ErrorBoundary: any = {
 		}
 		return vnode.children;
 	},
-
-	onbeforeupdate(vnode: Vnode) {
-		// Reset error when route changes
-		if (vnode.children !== this.state.originalView) {
-			this.state.error = null;
-			this.state.originalView = vnode.children;
-		}
-	},
 };
 
 interface RouteErrorAttrs {
 	error: Error;
 }
 
-// Route Error Component
 const RouteError: m.Component<RouteErrorAttrs> = {
 	view: (vnode) => {
 		const { error } = vnode.attrs;
@@ -93,14 +94,12 @@ for (const path in modules) {
 				const module = await modules[path]() as { default: any };
 				const Component = module.default;
 
-				// Wrap component with error boundary
 				return {
 					view: (vnode: Vnode) => m(ErrorBoundary, null, [
 						m(Component, vnode.attrs),
 					]),
 				};
 			} catch (error) {
-				// Handle route loading errors
 				return {
 					view: () => m(RouteError, { error: error as Error }),
 				};
@@ -109,13 +108,18 @@ for (const path in modules) {
 	};
 }
 
-// Not Found route with error boundary
 tempRoutes["/:404..."] = {
 	view: () =>
 		m(ErrorBoundary, null, [
 			m(Layout, null, [
-				m("div", { class: "m-0 p-0" }, [
-					m("h1", { class: "text-center font-bold text-3xl" }, "404 Not Found"),
+				m("div", { class: "flex flex-col items-center justify-center min-h-screen p-4 text-center" }, [
+					m("h1", { class: "text-6xl font-bold text-blue-500 mb-4" }, "404"),
+					m("h2", { class: "text-2xl font-semibold mb-4" }, "Page Not Found"),
+					m("p", { class: "text-slate-400 mb-8 max-w-md" }, "The page you are looking for might have been removed or is temporarily unavailable."),
+					m("button", {
+						onclick: () => m.route.set("/"),
+						class: "px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900",
+					}, "Back to Home"),
 				]),
 			]),
 		]),
@@ -125,23 +129,19 @@ export const routes = tempRoutes;
 
 export function initRouter() {
 	try {
-		// Global error handler for uncaught errors
 		window.onerror = (msg, url, lineNo, columnNo, error) => {
 			console.error("[Global Error]", { msg, url, lineNo, columnNo, error });
-			m.redraw(); // Ensure error state is rendered
+			m.redraw();
 		};
 
-		// Global promise rejection handler
 		window.onunhandledrejection = (event) => {
 			console.error("[Unhandled Promise Rejection]", event.reason);
 			m.redraw();
 		};
 
-		// Initialize router
 		m.route(document.body, "/", routes);
 	} catch (err) {
 		console.error("[Router Initialization Error]", err);
-		// Render fatal error directly to body
 		m.render(document.body, m(RouteError, { error: err as Error }));
 	}
 }

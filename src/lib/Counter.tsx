@@ -1,4 +1,4 @@
-import m from "mithril";
+import m, { Vnode, Component } from "mithril";
 import { signal, computed, effect } from "@preact/signals";
 import mitt from "mitt";
 
@@ -13,8 +13,8 @@ interface ButtonAttrs {
 	onclick?: () => void;
 }
 
-const Button: m.Component<ButtonAttrs> = {
-	view: (vnode) => {
+const Button: Component<ButtonAttrs> = {
+	view(vnode: Vnode<ButtonAttrs>): Vnode {
 		const { label, onclick } = vnode.attrs;
 		return m("button", {
 			onclick: onclick,
@@ -23,8 +23,8 @@ const Button: m.Component<ButtonAttrs> = {
 	},
 };
 
-const Counter: m.Component = {
-	view: () => {
+const Counter: Component = {
+	view(): Vnode {
 		const doubled = computed(() => count.value * 2);
 
 		effect(() => {
