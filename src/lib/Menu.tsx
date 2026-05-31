@@ -13,14 +13,31 @@ interface MenuAttrs {
 	items: MenuItem[];
 }
 
+interface MenuAttrs {
+	items: MenuItem[];
+}
+
+interface MenuState {
+	query: import("@preact/signals").Signal<string>;
+	fuse: Fuse<MenuItem>;
+}
+
 const Menu: Component<MenuAttrs> = {
+	oninit(vnode: Vnode<MenuAttrs>) {
+		(vnode.state as any) = {
+			query: signal(""),
+			fuse: new Fuse(vnode.attrs.items, {
+				keys: ["title", "description"],
+				threshold: 0.3,
+			}),
+		};
+	},
+
 	view(vnode: Vnode<MenuAttrs>): Vnode {
 		const { items } = vnode.attrs;
-		const query = signal("");
-		const fuse = new Fuse(items, {
-			keys: ["title", "description"],
-			threshold: 0.3,
-		});
+		const state = vnode.state as MenuState;
+		const query = state.query;
+		const fuse = state.fuse;
 
 		const filteredItems = computed(() => {
 			const q = query.value.trim();
@@ -28,7 +45,7 @@ const Menu: Component<MenuAttrs> = {
 				return items;
 			}
 			const results = fuse.search(q);
-			return results.map((r) => r.item);
+			return results.map((r: any) => r.item);
 		});
 
 		const handleSearch = (e: Event) => {
@@ -54,7 +71,7 @@ const Menu: Component<MenuAttrs> = {
 			// Grid
 			m("div", { class: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" },
 				filteredItems.value.length > 0
-					? filteredItems.value.map((item) =>
+					? filteredItems.value.map((item: MenuItem) =>
 							m("div", {
 								onclick: () => m.route.set(item.route),
 								class: "group relative bg-slate-800/60 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-slate-700/50 hover:shadow-md hover:border-blue-500/30 cursor-pointer transition-all duration-200 hover:bg-slate-700/40",
