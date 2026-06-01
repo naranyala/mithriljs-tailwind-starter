@@ -1,5 +1,7 @@
 # Mithril Tailwind Starter
 
+> test
+
 A modern, high-performance frontend starter template using [Mithril.js](https://github.com/mithril/mithril), [Tailwind CSS v4](https://tailwindcss.com/), and [Vite](https://vitejs.dev/). This template is designed for developers who want a lightweight, extremely fast, and type-safe foundation for their web applications.
 
 ## ✨ Features
